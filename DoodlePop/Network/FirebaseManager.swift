@@ -93,14 +93,14 @@ class FirebaseManager: ObservableObject {
             print("✅ Upload completed for path: \(path)")
             
             // Get download URL after upload is complete with retry logic
-            var downloadURL: URL
+            var downloadURL: URL?
             var retryCount = 0
             let maxRetries = 3
             
             while retryCount < maxRetries {
                 do {
                     downloadURL = try await imageRef.downloadURL()
-                    print("✅ Download URL obtained: \(downloadURL.absoluteString)")
+                    print("✅ Download URL obtained: \(downloadURL?.absoluteString ?? "nil")")
                     break
                 } catch {
                     retryCount += 1
@@ -113,13 +113,18 @@ class FirebaseManager: ObservableObject {
                 }
             }
             
+            // Ensure we have a valid download URL
+            guard let finalDownloadURL = downloadURL else {
+                throw FirebaseError.downloadFailed("Failed to obtain download URL after \(maxRetries) attempts")
+            }
+            
             // Create Firestore document to trigger backend processing
-            try await createFirestoreDocument(for: drawing, imageURL: downloadURL.absoluteString, userId: userId)
+            try await createFirestoreDocument(for: drawing, imageURL: finalDownloadURL.absoluteString, userId: userId)
             
             isUploading = false
             uploadProgress = 1.0
             
-            return downloadURL.absoluteString
+            return finalDownloadURL.absoluteString
             
         } catch {
             isUploading = false
