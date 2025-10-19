@@ -151,12 +151,24 @@ struct DrawingThumbnailView: View {
             }
             .frame(height: 150)
             
-            // Drawing name
-            Text(drawing.name)
-                .font(.headline)
-                .foregroundColor(.primary)
-                .lineLimit(2)
-                .multilineTextAlignment(.center)
+            // Drawing name and sync status
+            VStack(spacing: 4) {
+                Text(drawing.name)
+                    .font(.headline)
+                    .foregroundColor(.primary)
+                    .lineLimit(2)
+                    .multilineTextAlignment(.center)
+                
+                // Firebase sync status
+                HStack(spacing: 4) {
+                    Image(systemName: drawing.firebaseSynced ? "cloud.fill" : "cloud")
+                        .font(.caption)
+                        .foregroundColor(drawing.firebaseSynced ? .green : .orange)
+                    Text(drawing.firebaseSynced ? "Synced" : "Local only")
+                        .font(.caption2)
+                        .foregroundColor(.secondary)
+                }
+            }
         }
     }
 }
