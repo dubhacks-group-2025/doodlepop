@@ -19,6 +19,8 @@ struct DrawView: View {
     @State private var drawingName: String
     @State private var isEditing: Bool
     @State private var existingDrawing: Drawing?
+    @StateObject private var firebaseManager = FirebaseManager.shared
+    @State private var showUploadProgress = false
     
     init(drawingName: String = "", editing: Drawing? = nil) {
         self._drawingName = State(initialValue: drawingName)
@@ -40,6 +42,7 @@ struct DrawView: View {
                     Button("Save") {
                         saveDrawing()
                     }
+                    .disabled(firebaseManager.isUploading)
                 }
             }
         }
@@ -50,6 +53,22 @@ struct DrawView: View {
             Button("OK") { }
         } message: {
             Text(alertMessage)
+        }
+        .overlay {
+            if firebaseManager.isUploading {
+                VStack {
+                    ProgressView("Uploading to cloud...")
+                        .progressViewStyle(CircularProgressViewStyle())
+                        .scaleEffect(1.2)
+                    Text("\(Int(firebaseManager.uploadProgress * 100))%")
+                        .font(.caption)
+                        .padding(.top, 8)
+                }
+                .padding()
+                .background(Color.black.opacity(0.7))
+                .foregroundColor(.white)
+                .cornerRadius(12)
+            }
         }
     }
     
@@ -85,6 +104,10 @@ struct DrawView: View {
             
             do {
                 try modelContext.save()
+                // Upload to Firebase
+                Task {
+                    await uploadToFirebase(existingDrawing)
+                }
                 alertMessage = "Drawing updated successfully!"
                 showingAlert = true
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
@@ -106,6 +129,10 @@ struct DrawView: View {
             
             do {
                 try modelContext.save()
+                // Upload to Firebase
+                Task {
+                    await uploadToFirebase(newDrawing)
+                }
                 alertMessage = "Drawing saved successfully!"
                 showingAlert = true
                 // Dismiss after a short delay to show the success message
@@ -119,6 +146,31 @@ struct DrawView: View {
         }
     }
     
+    @MainActor
+    private func uploadToFirebase(_ drawing: Drawing) async {
+        do {
+            // Upload main drawing image
+            let imageURL = try await firebaseManager.uploadDrawing(drawing)
+            
+            // Upload thumbnail if available
+            var thumbnailURL: String?
+            if let thumbnailData = drawing.thumbnailData {
+                thumbnailURL = try await firebaseManager.uploadThumbnail(drawing, thumbnailData: thumbnailData)
+            }
+            
+            // Mark as synced
+            drawing.markAsSynced(imageURL: imageURL, thumbnailURL: thumbnailURL)
+            
+            // Save the updated drawing
+            try modelContext.save()
+            
+        } catch {
+            // Handle upload error - drawing is still saved locally
+            print("Firebase upload failed: \(error.localizedDescription)")
+            // You could show a notification that the drawing was saved locally but not synced
+        }
+    }
+    
 
 }
 
@@ -128,6 +180,9 @@ struct CanvasViewRepresentable: UIViewRepresentable {
     let toolPicker: PKToolPicker
     
     func makeUIView(context: Context) -> PKCanvasView {
+        // Ensure white background
+        canvasView.backgroundColor = UIColor.white
+        canvasView.isOpaque = true
         return canvasView
     }
     
