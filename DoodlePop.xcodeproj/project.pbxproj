@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		AB3218FF2EA45DA000A9EDD0 /* BloomDraw.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BloomDraw.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AB3218FF2EA45DA000A9EDD0 /* DoodlePop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DoodlePop.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		AB3219012EA45DA000A9EDD0 /* BloomDraw */ = {
+		AB3219012EA45DA000A9EDD0 /* DoodlePop */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = BloomDraw;
+			path = DoodlePop;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -32,7 +32,7 @@
 		AB3218F62EA45DA000A9EDD0 = {
 			isa = PBXGroup;
 			children = (
-				AB3219012EA45DA000A9EDD0 /* BloomDraw */,
+				AB3219012EA45DA000A9EDD0 /* DoodlePop */,
 				AB3219002EA45DA000A9EDD0 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -48,9 +48,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		AB3218FE2EA45DA000A9EDD0 /* BloomDraw */ = {
+		AB3218FE2EA45DA000A9EDD0 /* DoodlePop */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = AB32190A2EA45DA200A9EDD0 /* Build configuration list for PBXNativeTarget "BloomDraw" */;
+			buildConfigurationList = AB32190A2EA45DA200A9EDD0 /* Build configuration list for PBXNativeTarget "DoodlePop" */;
 			buildPhases = (
 				AB3218FB2EA45DA000A9EDD0 /* Sources */,
 				AB3218FC2EA45DA000A9EDD0 /* Frameworks */,
@@ -61,12 +61,12 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				AB3219012EA45DA000A9EDD0 /* BloomDraw */,
+				AB3219012EA45DA000A9EDD0 /* DoodlePop */,
 			);
-			name = BloomDraw;
+			name = DoodlePop;
 			packageProductDependencies = (
 			);
-			productName = BloomDraw;
+			productName = DoodlePop;
 			productReference = AB3218FF2EA45DA000A9EDD0 /* BloomDraw.app */;
 			productType = "com.apple.product-type.application";
 		};
@@ -85,7 +85,7 @@
 					};
 				};
 			};
-			buildConfigurationList = AB3218FA2EA45DA000A9EDD0 /* Build configuration list for PBXProject "BloomDraw" */;
+			buildConfigurationList = AB3218FA2EA45DA000A9EDD0 /* Build configuration list for PBXProject "DoodlePop" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -99,7 +99,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				AB3218FE2EA45DA000A9EDD0 /* BloomDraw */,
+				AB3218FE2EA45DA000A9EDD0 /* DoodlePop */,
 			);
 		};
 /* End PBXProject section */
@@ -267,7 +267,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.kellieho.BloomDraw;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kellieho.DoodlePop;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -303,7 +303,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.kellieho.BloomDraw;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kellieho.DoodlePop;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -321,7 +321,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		AB3218FA2EA45DA000A9EDD0 /* Build configuration list for PBXProject "BloomDraw" */ = {
+		AB3218FA2EA45DA000A9EDD0 /* Build configuration list for PBXProject "DoodlePop" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				AB3219082EA45DA200A9EDD0 /* Debug */,
@@ -330,7 +330,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		AB32190A2EA45DA200A9EDD0 /* Build configuration list for PBXNativeTarget "BloomDraw" */ = {
+		AB32190A2EA45DA200A9EDD0 /* Build configuration list for PBXNativeTarget "DoodlePop" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				AB32190B2EA45DA200A9EDD0 /* Debug */,
