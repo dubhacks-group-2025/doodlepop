@@ -60,6 +60,7 @@ class FirebaseManager: ObservableObject {
             
             // Create storage path
             let path = createStoragePath(for: drawing, userId: userId)
+            print("📁 Uploading to path: \(path)")
             let imageRef = storageRef.child(path)
             
             // Create metadata
@@ -72,7 +73,7 @@ class FirebaseManager: ObservableObject {
                 "modifiedDate": ISO8601DateFormatter().string(from: drawing.modifiedDate)
             ]
             
-            // Upload with progress tracking
+            // Upload with progress tracking using async/await
             let uploadTask = imageRef.putData(imageData, metadata: metadata) { [weak self] metadata, error in
                 if let error = error {
                     self?.uploadError = error.localizedDescription
@@ -89,9 +90,28 @@ class FirebaseManager: ObservableObject {
             
             // Wait for upload to complete
             let _ = try await uploadTask
-            // Wait a moment for the upload to be fully processed
-            try await Task.sleep(nanoseconds: 1_000_000_000) // 1 second
-            let downloadURL = try await imageRef.downloadURL()
+            print("✅ Upload completed for path: \(path)")
+            
+            // Get download URL after upload is complete with retry logic
+            var downloadURL: URL
+            var retryCount = 0
+            let maxRetries = 3
+            
+            while retryCount < maxRetries {
+                do {
+                    downloadURL = try await imageRef.downloadURL()
+                    print("✅ Download URL obtained: \(downloadURL.absoluteString)")
+                    break
+                } catch {
+                    retryCount += 1
+                    print("⚠️ Download URL attempt \(retryCount) failed: \(error.localizedDescription)")
+                    if retryCount >= maxRetries {
+                        throw error
+                    }
+                    // Wait before retry
+                    try await Task.sleep(nanoseconds: 1_000_000_000) // 1 second
+                }
+            }
             
             // Create Firestore document to trigger backend processing
             try await createFirestoreDocument(for: drawing, imageURL: downloadURL.absoluteString, userId: userId)
